@@ -4,7 +4,12 @@ import pandas as pd
 import pyqtgraph as pg# from pyqtgraph import GraphicsLayoutWidget, PlotWidget 
 import sys
 from pyqtgraph import GraphicsLayoutWidget
-
+# Libraries for boxplot 
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+#Pyqt libraries 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 
@@ -24,7 +29,7 @@ class Ui_ACPC(object):
     
     def setupUi(self, ACPC):
         ACPC.setObjectName("ACPC")
-        ACPC.resize(803, 673)
+        ACPC.resize(1190, 738)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -46,9 +51,6 @@ class Ui_ACPC(object):
         self.mainframe.setObjectName("mainframe")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.mainframe)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.label = QtWidgets.QLabel(self.mainframe)
-        self.label.setObjectName("label")
-        self.gridLayout_2.addWidget(self.label, 1, 1, 1, 1)
         self.Data_Selection_Frame = QtWidgets.QFrame(self.mainframe)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -99,8 +101,11 @@ class Ui_ACPC(object):
         self.Legend_Window.setObjectName("Legend_Window")
         self.verticalLayout_2.addWidget(self.Legend_Window)
         self.gridLayout_2.addWidget(self.Data_Selection_Frame, 0, 0, 1, 1)
+        self.Data_Selected_Label = QtWidgets.QLabel(self.mainframe)
+        self.Data_Selected_Label.setObjectName("Data_Selected_Label")
+        self.gridLayout_2.addWidget(self.Data_Selected_Label, 1, 0, 1, 1)
         self.PlotWindow = GraphicsLayoutWidget(self.mainframe)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.PlotWindow.sizePolicy().hasHeightForWidth())
@@ -108,13 +113,22 @@ class Ui_ACPC(object):
         self.PlotWindow.setMinimumSize(QtCore.QSize(550, 550))
         self.PlotWindow.setObjectName("PlotWindow")
         self.gridLayout_2.addWidget(self.PlotWindow, 0, 1, 1, 1)
-        self.Data_Selected_Label = QtWidgets.QLabel(self.mainframe)
-        self.Data_Selected_Label.setObjectName("Data_Selected_Label")
-        self.gridLayout_2.addWidget(self.Data_Selected_Label, 1, 0, 1, 1)
+        self.label = QtWidgets.QLabel(self.mainframe)
+        self.label.setObjectName("label")
+        self.gridLayout_2.addWidget(self.label, 1, 1, 1, 1)
+        self.widget = QtWidgets.QWidget(self.mainframe)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
+        self.widget.setSizePolicy(sizePolicy)
+        self.widget.setMinimumSize(QtCore.QSize(300, 600))
+        self.widget.setObjectName("widget")
+        self.gridLayout_2.addWidget(self.widget, 0, 2, 1, 1)
         self.gridLayout.addWidget(self.mainframe, 0, 0, 1, 1)
         ACPC.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ACPC)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 803, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1190, 26))
         self.menubar.setObjectName("menubar")
         self.DATA = QtWidgets.QMenu(self.menubar)
         self.DATA.setObjectName("DATA")
@@ -127,6 +141,7 @@ class Ui_ACPC(object):
         self.DATA.addAction(self.actionLoad_CSV_File)
         self.menubar.addAction(self.DATA.menuAction())
 
+
         self.retranslateUi(ACPC)
         QtCore.QMetaObject.connectSlotsByName(ACPC)
         
@@ -137,6 +152,23 @@ class Ui_ACPC(object):
         #Adding a Plot to the Legendwindow
         self.plotlegend = self.Legend_Window.addPlot()
         
+        #adding boxplot 
+        self.fig = Figure()
+        self.ax1 = self.fig.add_subplot(211)
+        self.ax2 = self.fig.add_subplot(212)
+        self.axes=[self.ax1, self.ax2]
+        self.canvas = FigureCanvas(self.fig)
+
+        self.canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding, 
+                                  QtWidgets.QSizePolicy.Expanding)
+        self.canvas.updateGeometry()
+        # creating a Vertical Box layout
+        self.layout = QtWidgets.QGridLayout(self.widget)
+        # adding canvas to the layout
+        self.layout.addWidget(self.canvas)
+        
+        
+        
         #connection to load the csv file in: 
         self.actionLoad_CSV_File.triggered.connect(self.loaddata)
         #connection once the colored code 
@@ -145,20 +177,24 @@ class Ui_ACPC(object):
         self.Plot_Data_pushButton.clicked.connect(self.plotdata)
         #connection to when data in the mainplot is selected 
         self.scatter.sigClicked.connect(self.selecteddata)
+        #connection to auto update boxplots: 
+        self.Xaxis_Data_comboBox.activated.connect(self.updateboxplot)
+        self.Yaxis_Data_comboBox.activated.connect(self.updateboxplot)
         
 
     def retranslateUi(self, ACPC):
         _translate = QtCore.QCoreApplication.translate
         ACPC.setWindowTitle(_translate("ACPC", "ACPC"))
-        self.label.setText(_translate("ACPC", "None"))
         self.Data_Selection_Title.setText(_translate("ACPC", "Data Selection "))
         self.Colored_Data_Label.setText(_translate("ACPC", "Colored Data:"))
         self.Xaxis_Data_Label.setText(_translate("ACPC", "X-Axis Data:"))
         self.Yaxis_Data_Label.setText(_translate("ACPC", "Y-Axis Data:"))
         self.Plot_Data_pushButton.setText(_translate("ACPC", "Plot Data"))
+        self.label.setText(_translate("ACPC", "None"))
         self.Data_Selected_Label.setText(_translate("ACPC", "Data Selected:"))
         self.DATA.setTitle(_translate("ACPC", "DATA"))
         self.actionLoad_CSV_File.setText(_translate("ACPC", "Load CSV File"))
+
     
     #loading the csv file in 
     def loaddata(self): 
@@ -287,7 +323,28 @@ class Ui_ACPC(object):
         #Adding Axis labels
         self.plot1.setLabel(axis='left',text=attributey)
         self.plot1.setLabel(axis='bottom',text=attributex)
-
+    
+    
+    def updateboxplot(self): 
+        # Clearing boxplot of data 
+        self.ax1.clear()
+        self.ax2.clear() 
+        #getting the current selected attributes: 
+        attributex = self.Xaxis_Data_comboBox.currentText()
+        attributey = self.Yaxis_Data_comboBox.currentText()
+        #getting all UWI,x-data,y-data,colorcodecolumnname,colorcodedictionary
+        datax = self.data_df[attributex].values
+        datay = self.data_df[attributey].values
+        #removing nan from data 
+        datax = datax[np.logical_not(np.isnan(datax))]
+        datay = datay[np.logical_not(np.isnan(datay))]
+        #plotting the data 
+        self.ax1.boxplot(datax)
+        self.ax2.boxplot(datay)
+        self.axes[0].set_title("datax: "+attributex)
+        self.axes[1].set_title("datay: "+attributey)
+        #refreshing canvases 
+        self.canvas.draw()
         
     def selecteddata(self,obj, points): 
         print('selected point:',obj,points)
