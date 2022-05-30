@@ -197,7 +197,7 @@ class Ui_ACPC(object):
 
         
         #resetting name to have a version number and last edit 
-        ACPC.setWindowTitle(_translate("ACPC", "ACPC ver-0.01 - fix extra window - 5/30/2022"))
+        ACPC.setWindowTitle(_translate("ACPC", "ACPC ver-0.02 - sorted dropdown data - 5/30/2022"))
         
     #loading the csv file in 
     def loaddata(self): 
@@ -208,7 +208,6 @@ class Ui_ACPC(object):
             file_location = "C:/Users/jonak/OneDrive - University of Calgary/Desktop/Rockyview_Geoservices/Attribute Crossplot Program/Dataset/NTKN facies.csv"
         #storing the file location for future use 
         self.file_location = file_location[0]
-        print(file_location[0])
         #loading data as a dataframe
         data_df = pd.read_csv(file_location[0],header=0) #turns data into a dataframe and read the first line as the header 
         #storing dataframe for functional use 
@@ -216,8 +215,10 @@ class Ui_ACPC(object):
         
         #Determine the number of different attributes, UWI and well_info/parameter 
         header_list = self.data_df.columns.values
+        
         #storing the header columns to organize the data 
         self.all_header_list = header_list
+        
         
         self.popcomboboxes(header_list)
         
@@ -234,7 +235,6 @@ class Ui_ACPC(object):
         self.color_code_column_name = color_code_column 
         #Creating a dictionary to automatically define the color for each value in the color code column 
         color_code_columm_values = self.data_df[color_code_column].values
-        print(color_code_columm_values)
         color_code_dict = {}
         ## for each values in the color code column valuues 
         for item in color_code_columm_values:
@@ -255,11 +255,12 @@ class Ui_ACPC(object):
             ## if the name includes UWI,UTMX,UTMY and the color code name is not in the header,
             if 'UWI' not in i and 'UTMX' not in i and 'UTMY' not in i and color_code_column not in i:
                 attribute_list.append(i) 
-        self.attribute_list = attribute_list
+        sorted_attribute_list = sorted(attribute_list)
+        self.attribute_list = sorted_attribute_list
         
         if self.comboboxfilled == False: 
-            self.Xaxis_Data_comboBox.addItems(attribute_list)
-            self.Yaxis_Data_comboBox.addItems(attribute_list)
+            self.Xaxis_Data_comboBox.addItems(sorted_attribute_list)
+            self.Yaxis_Data_comboBox.addItems(sorted_attribute_list)
         self.comboboxfilled = True
         
         #Want to automatically plot the legends here 
@@ -284,12 +285,10 @@ class Ui_ACPC(object):
         self.plotlegend.addItem(scatter)
         
     def plotdata(self):        
-        
         #clearing the plot
         self.plot1.clear() 
         self.plot1.addLegend()
         self.scatter.clear()
-        
         #getting the current selected attributes: 
         attributex = self.Xaxis_Data_comboBox.currentText()
         attributey = self.Yaxis_Data_comboBox.currentText()
@@ -348,17 +347,12 @@ class Ui_ACPC(object):
                 attxfacies[datacolor].append(datax[i])
             if not np.isnan(datayith): # and datay[i] != math.nan and datay[i] != nan:
                 attyfacies[datacolor].append(datay[i])
-
-
         #organizing data into dictionaries with the facieskeylist 
         dataxdict = {} 
         dataydict = {} 
         for i in range(len(facieskeylist)):
             dataxdict[facieskeylist[i]]=attxfacies[i]
             dataydict[facieskeylist[i]]=attyfacies[i]
-
-        #print(dataxdict)
-        #print(dataydict)
         #plotting the data 
         self.ax1.boxplot(dataxdict.values())
         self.ax1.set_xticklabels(dataxdict.keys())
