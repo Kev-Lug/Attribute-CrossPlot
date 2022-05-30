@@ -4,6 +4,7 @@ import pandas as pd
 import pyqtgraph as pg# from pyqtgraph import GraphicsLayoutWidget, PlotWidget 
 import sys
 from pyqtgraph import GraphicsLayoutWidget
+import math
 # Libraries for boxplot 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
@@ -29,7 +30,7 @@ class Ui_ACPC(object):
     
     def setupUi(self, ACPC):
         ACPC.setObjectName("ACPC")
-        ACPC.resize(1190, 738)
+        ACPC.resize(1260, 738)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -57,7 +58,7 @@ class Ui_ACPC(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.Data_Selection_Frame.sizePolicy().hasHeightForWidth())
         self.Data_Selection_Frame.setSizePolicy(sizePolicy)
-        self.Data_Selection_Frame.setMinimumSize(QtCore.QSize(200, 0))
+        self.Data_Selection_Frame.setMinimumSize(QtCore.QSize(350, 0))
         self.Data_Selection_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Data_Selection_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Data_Selection_Frame.setObjectName("Data_Selection_Frame")
@@ -128,7 +129,7 @@ class Ui_ACPC(object):
         self.gridLayout.addWidget(self.mainframe, 0, 0, 1, 1)
         ACPC.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ACPC)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1190, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1260, 26))
         self.menubar.setObjectName("menubar")
         self.DATA = QtWidgets.QMenu(self.menubar)
         self.DATA.setObjectName("DATA")
@@ -190,8 +191,8 @@ class Ui_ACPC(object):
         self.Xaxis_Data_Label.setText(_translate("ACPC", "X-Axis Data:"))
         self.Yaxis_Data_Label.setText(_translate("ACPC", "Y-Axis Data:"))
         self.Plot_Data_pushButton.setText(_translate("ACPC", "Plot Data"))
-        self.label.setText(_translate("ACPC", "None"))
         self.Data_Selected_Label.setText(_translate("ACPC", "Data Selected:"))
+        self.label.setText(_translate("ACPC", "None"))
         self.DATA.setTitle(_translate("ACPC", "DATA"))
         self.actionLoad_CSV_File.setText(_translate("ACPC", "Load CSV File"))
 
@@ -288,7 +289,7 @@ class Ui_ACPC(object):
             coord +=1
             # adding spot_dic in the list of spots
             spots.append(spot_dic)
-        scatter.addPoints(spots)
+            scatter.addPoints(spots)
         self.plotlegend.addItem(scatter)
         
     def plotdata(self):        
@@ -332,15 +333,46 @@ class Ui_ACPC(object):
         #getting the current selected attributes: 
         attributex = self.Xaxis_Data_comboBox.currentText()
         attributey = self.Yaxis_Data_comboBox.currentText()
+        numdatacolor = len(self.color_code_dict) # number of different color code to classify data 
+        #creating a sublist of data for each attributex (facies classification) 
+        attxfacies = [] 
+        attyfacies = [] 
+        facieskeylist = []
+        faciestext = "facies: " 
+        for i in range(numdatacolor):
+            attxfacies.append([]) 
+            attyfacies.append([])
+            facieskeylist.append(faciestext+str(i)) 
         #getting all UWI,x-data,y-data,colorcodecolumnname,colorcodedictionary
-        datax = self.data_df[attributex].values
-        datay = self.data_df[attributey].values
-        #removing nan from data 
-        datax = datax[np.logical_not(np.isnan(datax))]
-        datay = datay[np.logical_not(np.isnan(datay))]
+        datax = np.asarray(self.data_df[attributex].values)
+        datay = np.asarray(self.data_df[attributey].values)
+        datacolorkey = self.data_df[self.color_code_column_name].values # returns numerical value of data 
+        #organizing and sublisting each data values 
+        nan = np.nan
+        for i in range(len(datax)):
+            datacolor = int(datacolorkey[i]) #gives a numerical values of the facies 
+            dataxith = float(datax[i])
+            datayith = float(datay[i])
+            if not np.isnan(dataxith): # and datax[i] != math.nan and datax[i] != nan:
+                attxfacies[datacolor].append(datax[i])
+            if not np.isnan(datayith): # and datay[i] != math.nan and datay[i] != nan:
+                attyfacies[datacolor].append(datay[i])
+
+
+        #organizing data into dictionaries with the facieskeylist 
+        dataxdict = {} 
+        dataydict = {} 
+        for i in range(len(facieskeylist)):
+            dataxdict[facieskeylist[i]]=attxfacies[i]
+            dataydict[facieskeylist[i]]=attyfacies[i]
+
+        #print(dataxdict)
+        #print(dataydict)
         #plotting the data 
-        self.ax1.boxplot(datax)
-        self.ax2.boxplot(datay)
+        self.ax1.boxplot(dataxdict.values())
+        self.ax1.set_xticklabels(dataxdict.keys())
+        self.ax2.boxplot(dataydict.values())
+        self.ax2.set_xticklabels(dataydict.keys())
         self.axes[0].set_title("datax: "+attributex)
         self.axes[1].set_title("datay: "+attributey)
         #refreshing canvases 
