@@ -20,7 +20,6 @@ class Ui_ACPC(object):
     def __init__(self):
         self.file_location = '' 
         self.data_df = pd.DataFrame()
-        self.plot = pg.GraphicsLayoutWidget(show=True)
         self.all_header_list =[]
         self.color_code_column_name = []
         self.color_code_dict = {}
@@ -196,7 +195,10 @@ class Ui_ACPC(object):
         self.DATA.setTitle(_translate("ACPC", "DATA"))
         self.actionLoad_CSV_File.setText(_translate("ACPC", "Load CSV File"))
 
-    
+        
+        #resetting name to have a version number and last edit 
+        ACPC.setWindowTitle(_translate("ACPC", "ACPC ver-0.01 - fix extra window - 5/30/2022"))
+        
     #loading the csv file in 
     def loaddata(self): 
         #getting input for data location 
@@ -269,17 +271,6 @@ class Ui_ACPC(object):
         # for each colorcodekey - create a coordinate key paur 
         xycoord = []
         coord = 0
-        '''
-        for i in range(len(color_code_dict.keys())): 
-            #create an xycord for each item 
-            xycoord.append([1,coord])
-            coord += 1
-        print(xycoord)
-        print(color_code_dict.keys())
-        print(color_code_dict.values())
-        #set the data for the scatterplot 
-        scatter.setData(pos=xycoord,data=list(color_code_dict.keys()),brush=list(color_code_dict.values()))
-        '''
         spots = []
         #for each dataset row, 
         for i in range(len(color_code_dict.keys())):
