@@ -23,18 +23,20 @@ class Ui_ACPC(object):
         self.all_header_list =[]
         self.color_code_column_name = []
         self.color_code_dict = {}
+        self.color_code_dict_hex = {}
         self.attribute_list = [] 
         self.comboboxfilled = False
     
     
     def setupUi(self, ACPC):
         ACPC.setObjectName("ACPC")
-        ACPC.resize(1260, 738)
+        ACPC.resize(1240, 740)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(ACPC.sizePolicy().hasHeightForWidth())
         ACPC.setSizePolicy(sizePolicy)
+        ACPC.setMinimumSize(QtCore.QSize(1240, 740))
         self.centralwidget = QtWidgets.QWidget(ACPC)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
@@ -45,12 +47,12 @@ class Ui_ACPC(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.mainframe.sizePolicy().hasHeightForWidth())
         self.mainframe.setSizePolicy(sizePolicy)
-        self.mainframe.setMinimumSize(QtCore.QSize(600, 600))
+        self.mainframe.setMinimumSize(QtCore.QSize(1240, 660))
         self.mainframe.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.mainframe.setFrameShadow(QtWidgets.QFrame.Raised)
         self.mainframe.setObjectName("mainframe")
-        self.gridLayout_2 = QtWidgets.QGridLayout(self.mainframe)
-        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.mainframe)
+        self.gridLayout_3.setObjectName("gridLayout_3")
         self.Data_Selection_Frame = QtWidgets.QFrame(self.mainframe)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -61,49 +63,79 @@ class Ui_ACPC(object):
         self.Data_Selection_Frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.Data_Selection_Frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.Data_Selection_Frame.setObjectName("Data_Selection_Frame")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.Data_Selection_Frame)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.Data_Selection_Frame)
+        self.verticalLayout.setObjectName("verticalLayout")
         self.Data_Selection_Title = QtWidgets.QLabel(self.Data_Selection_Frame)
+        self.Data_Selection_Title.setMinimumSize(QtCore.QSize(0, 20))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.Data_Selection_Title.setFont(font)
         self.Data_Selection_Title.setTextFormat(QtCore.Qt.AutoText)
         self.Data_Selection_Title.setAlignment(QtCore.Qt.AlignCenter)
         self.Data_Selection_Title.setObjectName("Data_Selection_Title")
-        self.verticalLayout_2.addWidget(self.Data_Selection_Title)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout_2.addItem(spacerItem)
+        self.verticalLayout.addWidget(self.Data_Selection_Title)
         self.Colored_Data_Label = QtWidgets.QLabel(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Colored_Data_Label.setFont(font)
         self.Colored_Data_Label.setObjectName("Colored_Data_Label")
-        self.verticalLayout_2.addWidget(self.Colored_Data_Label)
+        self.verticalLayout.addWidget(self.Colored_Data_Label)
         self.Colored_Data_comboBox = QtWidgets.QComboBox(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Colored_Data_comboBox.setFont(font)
         self.Colored_Data_comboBox.setObjectName("Colored_Data_comboBox")
-        self.verticalLayout_2.addWidget(self.Colored_Data_comboBox)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout_2.addItem(spacerItem1)
+        self.verticalLayout.addWidget(self.Colored_Data_comboBox)
+        spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout.addItem(spacerItem)
         self.Xaxis_Data_Label = QtWidgets.QLabel(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Xaxis_Data_Label.setFont(font)
         self.Xaxis_Data_Label.setObjectName("Xaxis_Data_Label")
-        self.verticalLayout_2.addWidget(self.Xaxis_Data_Label)
+        self.verticalLayout.addWidget(self.Xaxis_Data_Label)
         self.Xaxis_Data_comboBox = QtWidgets.QComboBox(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Xaxis_Data_comboBox.setFont(font)
         self.Xaxis_Data_comboBox.setObjectName("Xaxis_Data_comboBox")
-        self.verticalLayout_2.addWidget(self.Xaxis_Data_comboBox)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout_2.addItem(spacerItem2)
+        self.verticalLayout.addWidget(self.Xaxis_Data_comboBox)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout.addItem(spacerItem1)
         self.Yaxis_Data_Label = QtWidgets.QLabel(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Yaxis_Data_Label.setFont(font)
         self.Yaxis_Data_Label.setObjectName("Yaxis_Data_Label")
-        self.verticalLayout_2.addWidget(self.Yaxis_Data_Label)
+        self.verticalLayout.addWidget(self.Yaxis_Data_Label)
         self.Yaxis_Data_comboBox = QtWidgets.QComboBox(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Yaxis_Data_comboBox.setFont(font)
         self.Yaxis_Data_comboBox.setObjectName("Yaxis_Data_comboBox")
-        self.verticalLayout_2.addWidget(self.Yaxis_Data_comboBox)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout_2.addItem(spacerItem3)
+        self.verticalLayout.addWidget(self.Yaxis_Data_comboBox)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout.addItem(spacerItem2)
         self.Plot_Data_pushButton = QtWidgets.QPushButton(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Plot_Data_pushButton.setFont(font)
         self.Plot_Data_pushButton.setObjectName("Plot_Data_pushButton")
-        self.verticalLayout_2.addWidget(self.Plot_Data_pushButton)
+        self.verticalLayout.addWidget(self.Plot_Data_pushButton)
+        self.Statsplot_pushButton = QtWidgets.QPushButton(self.Data_Selection_Frame)
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.Statsplot_pushButton.setFont(font)
+        self.Statsplot_pushButton.setObjectName("Statsplot_pushButton")
+        self.verticalLayout.addWidget(self.Statsplot_pushButton)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout.addItem(spacerItem3)
         self.Legend_Window = GraphicsLayoutWidget(self.Data_Selection_Frame)
         self.Legend_Window.setObjectName("Legend_Window")
-        self.verticalLayout_2.addWidget(self.Legend_Window)
-        self.gridLayout_2.addWidget(self.Data_Selection_Frame, 0, 0, 1, 1)
-        self.Data_Selected_Label = QtWidgets.QLabel(self.mainframe)
-        self.Data_Selected_Label.setObjectName("Data_Selected_Label")
-        self.gridLayout_2.addWidget(self.Data_Selected_Label, 1, 0, 1, 1)
+        self.verticalLayout.addWidget(self.Legend_Window)
+        self.gridLayout_3.addWidget(self.Data_Selection_Frame, 0, 0, 1, 1)
         self.PlotWindow = GraphicsLayoutWidget(self.mainframe)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -112,23 +144,33 @@ class Ui_ACPC(object):
         self.PlotWindow.setSizePolicy(sizePolicy)
         self.PlotWindow.setMinimumSize(QtCore.QSize(550, 550))
         self.PlotWindow.setObjectName("PlotWindow")
-        self.gridLayout_2.addWidget(self.PlotWindow, 0, 1, 1, 1)
-        self.label = QtWidgets.QLabel(self.mainframe)
-        self.label.setObjectName("label")
-        self.gridLayout_2.addWidget(self.label, 1, 1, 1, 1)
-        self.widget = QtWidgets.QWidget(self.mainframe)
+        self.gridLayout_3.addWidget(self.PlotWindow, 0, 1, 1, 1)
+        self.Data_Selected_Label = QtWidgets.QLabel(self.mainframe)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.Data_Selected_Label.setFont(font)
+        self.Data_Selected_Label.setObjectName("Data_Selected_Label")
+        self.gridLayout_3.addWidget(self.Data_Selected_Label, 1, 0, 1, 1)
+        self.Actual_Data_Selected = QtWidgets.QLabel(self.mainframe)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.Actual_Data_Selected.setFont(font)
+        self.Actual_Data_Selected.setObjectName("Actual_Data_Selected")
+        self.gridLayout_3.addWidget(self.Actual_Data_Selected, 1, 1, 1, 1)
+        self.BoxPlot_Widget = QtWidgets.QWidget(self.mainframe)
+        self.BoxPlot_Widget.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget.sizePolicy().hasHeightForWidth())
-        self.widget.setSizePolicy(sizePolicy)
-        self.widget.setMinimumSize(QtCore.QSize(300, 600))
-        self.widget.setObjectName("widget")
-        self.gridLayout_2.addWidget(self.widget, 0, 2, 1, 1)
+        sizePolicy.setHeightForWidth(self.BoxPlot_Widget.sizePolicy().hasHeightForWidth())
+        self.BoxPlot_Widget.setSizePolicy(sizePolicy)
+        self.BoxPlot_Widget.setMinimumSize(QtCore.QSize(300, 600))
+        self.BoxPlot_Widget.setObjectName("BoxPlot_Widget")
+        self.gridLayout_3.addWidget(self.BoxPlot_Widget, 0, 2, 1, 1)
         self.gridLayout.addWidget(self.mainframe, 0, 0, 1, 1)
         ACPC.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(ACPC)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1260, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1240, 26))
         self.menubar.setObjectName("menubar")
         self.DATA = QtWidgets.QMenu(self.menubar)
         self.DATA.setObjectName("DATA")
@@ -141,7 +183,6 @@ class Ui_ACPC(object):
         self.DATA.addAction(self.actionLoad_CSV_File)
         self.menubar.addAction(self.DATA.menuAction())
 
-
         self.retranslateUi(ACPC)
         QtCore.QMetaObject.connectSlotsByName(ACPC)
         
@@ -152,20 +193,20 @@ class Ui_ACPC(object):
         #Adding a Plot to the Legendwindow
         self.plotlegend = self.Legend_Window.addPlot()
         
-        #adding boxplot 
+        #adding statsplot - boxplot/histogram  
         self.fig = Figure()
         self.ax1 = self.fig.add_subplot(211)
         self.ax2 = self.fig.add_subplot(212)
         self.axes=[self.ax1, self.ax2]
         self.canvas = FigureCanvas(self.fig)
-
-        self.canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding, 
-                                  QtWidgets.QSizePolicy.Expanding)
+        self.canvas.setSizePolicy(QtWidgets.QSizePolicy.Expanding,QtWidgets.QSizePolicy.Expanding)
         self.canvas.updateGeometry()
         # creating a Vertical Box layout
-        self.layout = QtWidgets.QGridLayout(self.widget)
+        self.layout = QtWidgets.QGridLayout(self.BoxPlot_Widget)
         # adding canvas to the layout
         self.layout.addWidget(self.canvas)
+        # current status of statsplot - starting with boxplot 
+        self.statsplotstatus = "boxplot" #"histogram"
         
         
         
@@ -178,8 +219,10 @@ class Ui_ACPC(object):
         #connection to when data in the mainplot is selected 
         self.scatter.sigClicked.connect(self.selecteddata)
         #connection to auto update boxplots: 
-        self.Xaxis_Data_comboBox.activated.connect(self.updateboxplot)
-        self.Yaxis_Data_comboBox.activated.connect(self.updateboxplot)
+        self.Xaxis_Data_comboBox.activated.connect(self.updatestatsplot)
+        self.Yaxis_Data_comboBox.activated.connect(self.updatestatsplot)
+        #connection to toggle the stats data to change to histogram/boxplot: 
+        self.Statsplot_pushButton.clicked.connect(self.change_stats_plot_type)
         
 
     def retranslateUi(self, ACPC):
@@ -190,14 +233,15 @@ class Ui_ACPC(object):
         self.Xaxis_Data_Label.setText(_translate("ACPC", "X-Axis Data:"))
         self.Yaxis_Data_Label.setText(_translate("ACPC", "Y-Axis Data:"))
         self.Plot_Data_pushButton.setText(_translate("ACPC", "Plot Data"))
+        self.Statsplot_pushButton.setText(_translate("ACPC", "Toggle for Histogram"))
         self.Data_Selected_Label.setText(_translate("ACPC", "Data Selected:"))
-        self.label.setText(_translate("ACPC", "None"))
+        self.Actual_Data_Selected.setText(_translate("ACPC", "None"))
         self.DATA.setTitle(_translate("ACPC", "DATA"))
         self.actionLoad_CSV_File.setText(_translate("ACPC", "Load CSV File"))
 
         
         #resetting name to have a version number and last edit 
-        ACPC.setWindowTitle(_translate("ACPC", "ACPC ver-0.02 - sorted dropdown data - 5/30/2022"))
+        ACPC.setWindowTitle(_translate("ACPC", "ACPC ver-0.02 - histogram + colormatch of data - 5/30/2022"))
         
     #loading the csv file in 
     def loaddata(self): 
@@ -236,6 +280,26 @@ class Ui_ACPC(object):
         #Creating a dictionary to automatically define the color for each value in the color code column 
         color_code_columm_values = self.data_df[color_code_column].values
         color_code_dict = {}
+        color_code_dict_hex = {} 
+        color_code_keys = []
+        color_code_value = []
+        color_code_value_hex = []
+        ## for each values in the color code column valuues 
+        for item in color_code_columm_values:
+            ## if color code column values is not in the dictionary keys
+            if item not in color_code_keys:
+                color_code_keys.append(item)
+        #generating n number of colors for n keys 
+        color_code_value, color_code_value_hex = generate_colors(len(color_code_keys)) # genertes both color and hex value with color 
+        #creating dictionary to assign each key value: 
+        for i in range(len(color_code_keys)):
+            color_code_dict[color_code_keys[i]] = color_code_value[i]
+            color_code_dict_hex[color_code_keys[i]] = color_code_value_hex[i]
+        self.color_code_dict = color_code_dict
+        self.color_code_dict_hex = color_code_dict_hex
+        print(color_code_dict)
+        print(color_code_dict_hex)
+        """
         ## for each values in the color code column valuues 
         for item in color_code_columm_values:
             ## if color code column values is not in the dictionary keys
@@ -246,7 +310,7 @@ class Ui_ACPC(object):
                 color_code_dict[itemkey]=colorcode
             ## else skip to the next line 
         self.color_code_dict = color_code_dict 
-        
+        """
         
         #Determining which columns are non coordinate values 
         attribute_list = []
@@ -316,7 +380,7 @@ class Ui_ACPC(object):
         self.plot1.setLabel(axis='bottom',text=attributex)
     
     
-    def updateboxplot(self): 
+    def updatestatsplot(self): 
         # Clearing boxplot of data 
         self.ax1.clear()
         self.ax2.clear() 
@@ -353,19 +417,72 @@ class Ui_ACPC(object):
         for i in range(len(facieskeylist)):
             dataxdict[facieskeylist[i]]=attxfacies[i]
             dataydict[facieskeylist[i]]=attyfacies[i]
-        #plotting the data 
-        self.ax1.boxplot(dataxdict.values())
-        self.ax1.set_xticklabels(dataxdict.keys())
-        self.ax2.boxplot(dataydict.values())
-        self.ax2.set_xticklabels(dataydict.keys())
-        self.axes[0].set_title("datax: "+attributex)
-        self.axes[1].set_title("datay: "+attributey)
+        #plotting the data for Boxplot 
+        if self.statsplotstatus == "boxplot":
+            self.ax1.boxplot(dataxdict.values())
+            self.ax1.set_xticklabels(dataxdict.keys())
+            self.ax2.boxplot(dataydict.values())
+            self.ax2.set_xticklabels(dataydict.keys())
+            self.axes[0].set_title("datax: "+attributex)
+            self.axes[1].set_title("datay: "+attributey)
+        else:
+            """
+            for i in range(len(dataxdict.keys())):
+                self.ax1.hist(list(dataxdict.values())[i], label = list(dataxdict.keys())[i],density=True, histtype='bar')
+            self.ax1.legend()
+            for i in range(len(dataydict.keys())):
+                self.ax2.hist(list(dataydict.values())[i], label = list(dataxdict.keys())[i],density=True, histtype='bar')
+            self.ax2.legend()
+            """
+            self.ax1.hist(list(dataxdict.values()), label = list(dataxdict.keys()),density=True, histtype='bar',color = list(self.color_code_dict_hex.values()))
+            self.ax1.legend()
+            self.ax2.hist(list(dataydict.values()), label = list(dataxdict.keys()),density=True, histtype='bar',color = list(self.color_code_dict_hex.values()))
+            self.ax2.legend()
+            self.axes[0].set_title("datax: "+attributex)
+            self.axes[1].set_title("datay: "+attributey)
         #refreshing canvases 
         self.canvas.draw()
+    
+    #method to update to either to a boxplot or histogram 
+    def change_stats_plot_type(self):
+        #changing to a histogram: 
+        if self.statsplotstatus == "boxplot":
+            self.statsplotstatus = "histogram"
+            #updating text to prompt user if they'd like to change to a boxplot 
+            self.Statsplot_pushButton.setText("Toggle for Boxplot")
+        else: 
+            self.statsplotstatus = "boxplot"
+            #updating text to prompt user if they'd like to change to a histogram 
+            self.Statsplot_pushButton.setText("Toggle for Histogram")
+        self.updatestatsplot()
+            
         
     def selecteddata(self,obj, points): 
         print('selected point:',obj,points)
     
+    
+#Function to create random but distinct numbers that will match in python 
+import random 
+def generate_colors(n): 
+    rgb_values = [] 
+    hex_values = [] 
+    r = int(random.random() * 256) 
+    g = int(random.random() * 256) 
+    b = int(random.random() * 256) 
+    step = 256 / n 
+    for _ in range(n): 
+        r += step 
+        g += step 
+        b += step 
+        r = int(r) % 256 
+        g = int(g) % 256 
+        b = int(b) % 256 
+        r_hex = hex(r)[2:] 
+        g_hex = hex(g)[2:] 
+        b_hex = hex(b)[2:] 
+        hex_values.append('#' + r_hex + g_hex + b_hex) 
+        rgb_values.append((r,g,b)) 
+    return rgb_values, hex_values 
         
         
 
